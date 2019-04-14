@@ -15,7 +15,7 @@ public class DBPreloader {
     @Bean
     CommandLineRunner initDatabase(TaskRepository taskRepository, UserRepository userRepository) {
         return args -> {
-
+            log.info("Added to database: " + userRepository.save(new ApplicationUser("Oleg", "olegsolovev506@gmail.com", "$2a$10$BnUNQ/jkJh7gLXgLfoxHEu1xY.4yekhN8Xsh2X.jyd6iJ2A1NmKHG")));
         };
     }
 }

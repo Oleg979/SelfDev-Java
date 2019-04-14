@@ -1,18 +1,17 @@
 package com.oleg.restdemo.controllers;
 
-import com.oleg.restdemo.exceptions.ResponseResultException;
 import com.oleg.restdemo.exceptions.TaskNotFoundException;
 import com.oleg.restdemo.models.ApplicationUser;
 import com.oleg.restdemo.models.Task;
 import com.oleg.restdemo.repos.TaskRepository;
 import com.oleg.restdemo.repos.UserRepository;
+import com.oleg.restdemo.services.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -21,15 +20,17 @@ import java.util.List;
 public class TaskController {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final TaskService taskService;
 
     private boolean hasNoAccessToTask(String name, Task task) {
         return !task.getUser().equals(userRepository.findByName(name).get());
     }
 
     @Autowired
-    public TaskController(TaskRepository taskRepository, UserRepository userRepository) {
+    public TaskController(TaskRepository taskRepository, UserRepository userRepository, TaskService taskService) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
+        this.taskService = taskService;
     }
 
     @GetMapping
@@ -102,5 +103,10 @@ public class TaskController {
         task.setChecked(false);
         taskRepository.save(task);
         return task;
+    }
+
+    @GetMapping("today")
+    public List<Task> getTodayTasks(@AuthenticationPrincipal String name) {
+       return taskService.getAllTodayTasks(name);
     }
 }
