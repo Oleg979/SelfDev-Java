@@ -1,4 +1,4 @@
-package com.oleg.restdemo.services;
+package com.oleg.restdemo.services.taskMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,17 +6,18 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 @Service
-public class MorningMessageContentBuilder {
+public class TaskMessageContentBuilder {
     private TemplateEngine templateEngine;
 
     @Autowired
-    public MorningMessageContentBuilder(TemplateEngine templateEngine) {
+    public TaskMessageContentBuilder(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
 
-    String build(String name) {
+    String build(String name, String title) {
         Context context = new Context();
         context.setVariable("name", name);
-        return templateEngine.process("MorningMessage", context);
+        context.setVariable("title", title);
+        return templateEngine.process("TaskMessage", context);
     }
 }

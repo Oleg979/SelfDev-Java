@@ -1,4 +1,4 @@
-package com.oleg.restdemo.services;
+package com.oleg.restdemo.services.morningMessage;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class EveningMessageService {
+public class MorningMessageService {
     private JavaMailSender mailSender;
-    private EveningMessageContentBuilder mailContentBuilder;
+    private MorningMessageContentBuilder mailContentBuilder;
 
     @Autowired
-    public EveningMessageService(JavaMailSender mailSender, EveningMessageContentBuilder mailContentBuilder) {
+    public MorningMessageService(JavaMailSender mailSender, MorningMessageContentBuilder mailContentBuilder) {
         this.mailSender = mailSender;
         this.mailContentBuilder = mailContentBuilder;
     }
@@ -25,7 +25,7 @@ public class EveningMessageService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("olegsolovev506@gmail.com");
             messageHelper.setTo(recipient);
-            messageHelper.setSubject("Good evening from SelfDev");
+            messageHelper.setSubject("Good morning from SelfDev");
             String content = mailContentBuilder.build(name);
             messageHelper.setText(content, true);
         };

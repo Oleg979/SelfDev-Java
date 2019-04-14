@@ -7,6 +7,7 @@ import com.oleg.restdemo.repos.TaskRepository;
 import com.oleg.restdemo.repos.UserRepository;
 import com.oleg.restdemo.services.TaskService;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +22,18 @@ public class TaskController {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final TaskService taskService;
+    private final Scheduler scheduler;
 
     private boolean hasNoAccessToTask(String name, Task task) {
         return !task.getUser().equals(userRepository.findByName(name).get());
     }
 
     @Autowired
-    public TaskController(TaskRepository taskRepository, UserRepository userRepository, TaskService taskService) {
+    public TaskController(TaskRepository taskRepository, UserRepository userRepository, TaskService taskService, Scheduler scheduler) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.taskService = taskService;
+        this.scheduler = scheduler;
     }
 
     @GetMapping
@@ -49,11 +52,13 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task addTask(@RequestBody Task task, @AuthenticationPrincipal String name) {
+    public Task addTask(@RequestBody Task task, @AuthenticationPrincipal String name) throws SchedulerException {
         ApplicationUser user = userRepository.findByName(name).get();
         task.setUser(user);
         task.setCreationDate(LocalDate.now());
         user.getTasks().add(task);
+
+        taskService.sendTaskMessage(task);
         return taskRepository.save(task);
     }
 

@@ -3,6 +3,8 @@ package com.oleg.restdemo.services;
 import com.oleg.restdemo.models.ApplicationUser;
 import com.oleg.restdemo.repos.TaskRepository;
 import com.oleg.restdemo.repos.UserRepository;
+import com.oleg.restdemo.services.eveningMessage.EveningMessageService;
+import com.oleg.restdemo.services.morningMessage.MorningMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;

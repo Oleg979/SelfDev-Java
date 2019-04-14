@@ -4,7 +4,7 @@ import com.oleg.restdemo.exceptions.ResponseResultException;
 import com.oleg.restdemo.exceptions.UserAlreadyExistsException;
 import com.oleg.restdemo.models.ApplicationUser;
 import com.oleg.restdemo.repos.UserRepository;
-import com.oleg.restdemo.services.MorningMessageService;
+import com.oleg.restdemo.services.morningMessage.MorningMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,13 +41,6 @@ public class UserController {
         if(userFromDB.isPresent()) throw new UserAlreadyExistsException(user.getName());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        throw new ResponseResultException("ok");
-    }
-
-    @GetMapping("/send")
-    public void sendMail(@AuthenticationPrincipal String username) {
-        ApplicationUser user = userRepository.findByName(username).get();
-        mailService.prepareAndSend(user.getEmail(), user.getName());
         throw new ResponseResultException("ok");
     }
 }
