@@ -50,7 +50,7 @@ public class TaskService {
         String[] parts = task.getTime().split(":");
 
         Trigger trigger1 = TriggerBuilder.newTrigger()
-                .withIdentity("cronTrigger1", "group1")
+                .withIdentity("cronTrigger" + task.getId(), "group1")
                 .startAt(DateUtils.create(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), parts[0], parts[1]).getTime())
                 .build();
 
