@@ -40,7 +40,7 @@ public class TaskService {
 
     public void sendTaskMessage(Task task) throws SchedulerException {
         JobDetail job1 = JobBuilder.newJob(TaskMessageJob.class)
-                .withIdentity(task.getTitle(), "group1")
+                .withIdentity(task.getId(), "group1")
                 .usingJobData("title", task.getTitle())
                 .usingJobData("name", task.getUser().getName())
                 .usingJobData("email", task.getUser().getEmail())
