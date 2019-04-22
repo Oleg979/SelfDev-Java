@@ -38,6 +38,7 @@ public class TaskController {
 
     @GetMapping
     public List<Task> getAllTasks(@AuthenticationPrincipal String name) {
+        log.info("name = " + name);
         return taskService.getAllTodayTasks(name);
     }
 
@@ -77,13 +78,14 @@ public class TaskController {
 
     @DeleteMapping("{id}")
     public Task deleteTask(@PathVariable Long id, @AuthenticationPrincipal String name) throws IllegalAccessException {
-        log.info("Deleting task with id " + id);
+        log.info("Deleting task with id " + id + " from the user " + name);
         Task task = taskRepository
                 .findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
         if(hasNoAccessToTask(name, task))
             throw new IllegalAccessException("You have no access to this task");
         taskRepository.deleteById(id);
+        log.info("Deleted task with id " + id + " from the user " + name);
         return task;
     }
 
