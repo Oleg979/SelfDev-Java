@@ -41,6 +41,7 @@ public class UserController {
         if(userFromDB.isPresent()) throw new UserAlreadyExistsException(user.getName());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        log.info(user.toString());
         throw new ResponseResultException("ok");
     }
 }
