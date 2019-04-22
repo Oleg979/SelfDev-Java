@@ -23,7 +23,6 @@ public class ApplicationUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    @Email
     private String email;
     private String password;
 
