@@ -26,7 +26,7 @@ public class ApplicationUser {
     private String email;
     private String password;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @Fetch(value=FetchMode.SELECT)
     @JsonIgnore
     private Set<Task> tasks;
