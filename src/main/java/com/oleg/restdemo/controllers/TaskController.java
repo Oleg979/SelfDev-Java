@@ -38,7 +38,7 @@ public class TaskController {
 
     @GetMapping
     public List<Task> getAllTasks(@AuthenticationPrincipal String name) {
-        return taskRepository.findAllByUserName(name);
+        return taskService.getAllTodayTasks(name);
     }
 
     @GetMapping("{id}")
@@ -77,6 +77,7 @@ public class TaskController {
 
     @DeleteMapping("{id}")
     public Task deleteTask(@PathVariable Long id, @AuthenticationPrincipal String name) throws IllegalAccessException {
+        log.info("Deleting task with id " + id);
         Task task = taskRepository
                 .findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
