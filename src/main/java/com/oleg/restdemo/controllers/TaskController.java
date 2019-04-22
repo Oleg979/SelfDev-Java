@@ -79,6 +79,9 @@ public class TaskController {
     @DeleteMapping("{id}")
     public Task deleteTask(@PathVariable Long id, @AuthenticationPrincipal String name) throws IllegalAccessException {
         log.info("Deleting task with id " + id + " from the user " + name);
+        log.info("size: " + taskRepository.findAllByUserName(name).size());
+        log.info("user: " + userRepository.findByName(name));
+
         Task task = taskRepository
                 .findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
@@ -86,6 +89,8 @@ public class TaskController {
             throw new IllegalAccessException("You have no access to this task");
         taskRepository.deleteById(id);
         log.info("Deleted task with id " + id + " from the user " + name);
+        log.info("size: " + taskRepository.findAllByUserName(name).size());
+        log.info("user: " + userRepository.findByName(name));
         return task;
     }
 
