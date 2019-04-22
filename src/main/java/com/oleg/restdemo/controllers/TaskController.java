@@ -57,9 +57,9 @@ public class TaskController {
         task.setUser(user);
         task.setCreationDate(LocalDate.now());
         user.getTasks().add(task);
-
-        taskService.sendTaskMessage(task);
-        return taskRepository.save(task);
+        Task t = taskRepository.save(task);
+        taskService.sendTaskMessage(t);
+        return t;
     }
 
     @PutMapping
