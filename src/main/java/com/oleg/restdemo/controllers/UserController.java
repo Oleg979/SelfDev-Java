@@ -17,6 +17,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("users")
 @Slf4j
+@CrossOrigin(origins="*")
 public class UserController {
 
     private final UserRepository userRepository;

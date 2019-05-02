@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("tasks")
 @Slf4j
+@CrossOrigin(origins="*")
 public class TaskController {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;

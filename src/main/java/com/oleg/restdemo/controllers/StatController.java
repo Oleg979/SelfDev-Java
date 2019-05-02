@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @Slf4j
 @RequestMapping("stats")
+@CrossOrigin(origins="*")
 public class StatController {
     private final TaskRepository taskRepository;
 
