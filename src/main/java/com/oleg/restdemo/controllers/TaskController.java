@@ -13,7 +13,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("tasks")
@@ -40,7 +43,11 @@ public class TaskController {
     @GetMapping
     public List<Task> getAllTasks(@AuthenticationPrincipal String name) {
         log.info("name = " + name);
-        return taskService.getAllTodayTasks(name);
+        return taskService
+                .getAllTodayTasks(name)
+                .stream()
+                .sorted((t1, t2) -> Math.toIntExact(t2.getTimestamp() - t1.getTimestamp()))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
@@ -58,6 +65,7 @@ public class TaskController {
         ApplicationUser user = userRepository.findByName(name).get();
         task.setUser(user);
         task.setCreationDate(LocalDate.now());
+        task.setTimestamp(new Date().getTime());
         user.getTasks().add(task);
         Task t = taskRepository.save(task);
         taskService.sendTaskMessage(t);

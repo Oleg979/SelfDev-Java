@@ -23,6 +23,7 @@ public class Task {
     private String tag;
     private String time;
     private LocalDate creationDate;
+    private long timestamp;
     private boolean isChecked;
 
     @ManyToOne(fetch = FetchType.LAZY)
